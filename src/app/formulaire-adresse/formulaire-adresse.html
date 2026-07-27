@@ -1,0 +1,54 @@
+<div class="max-w-5xl mx-auto mt-8 p-6">
+  <h2 class="text-2xl font-bold mb-6">Recherche d'adresse</h2>
+
+  <form
+    (ngSubmit)="onSubmit()"
+    class="flex items-end gap-4 flex-wrap"
+  >
+    <div class="flex flex-col">
+      <label for="nomRue" class="mb-1 font-medium">
+        Nom rue
+      </label>
+      <input
+        id="nomRue"
+        type="text"
+        [(ngModel)]="nomRue"
+        name="nomRue"
+        class="w-64 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
+    </div>
+
+    <div class="flex flex-col">
+      <label for="codePostal" class="mb-1 font-medium">
+        Code postal
+      </label>
+      <input
+        id="codePostal"
+        type="text"
+        [(ngModel)]="codePostal"
+        name="codePostal"
+        class="w-32 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
+    </div>
+
+    <div class="flex flex-col">
+      <label for="commune" class="mb-1 font-medium">
+        Commune
+      </label>
+      <input
+        id="commune"
+        type="text"
+        [(ngModel)]="commune"
+        name="commune"
+        class="w-64 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
+    </div>
+
+    <button
+      type="submit"
+      class="bg-blue-600 text-white px-5 py-2 rounded-md hover:bg-blue-700 transition-colors cursor-pointer"
+    >
+      Valider
+    </button>
+  </form>
+</div>
