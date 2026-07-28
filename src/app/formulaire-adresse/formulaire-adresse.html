@@ -44,11 +44,19 @@
       />
     </div>
 
-    <button
-      type="submit"
-      class="bg-blue-600 text-white px-5 py-2 rounded-md hover:bg-blue-700 transition-colors cursor-pointer"
-    >
-      Valider
-    </button>
+    @if(!formulaireValide)
+    {
+      <div class="mt-4 text-red-600">
+        {{ messageErreur }}
+      </div>
+    } @else {
+      <button
+        type="submit"
+        class="bg-blue-600 text-white px-5 py-2 rounded-md hover:bg-blue-700 transition-colors cursor-pointer"
+      >
+        Valider
+      </button>
+    }
+
   </form>
 </div>

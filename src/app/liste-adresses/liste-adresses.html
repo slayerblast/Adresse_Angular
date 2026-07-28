@@ -1,5 +1,5 @@
 <div class="mt-6">
-  <h2 class="text-xl font-bold mb-4">Résultats</h2>
+  <h2 class="text-xl font-bold mb-4">Résultats {{ adresses.length }}</h2>
 
   <div class="overflow-x-auto">
     <table class="min-w-full border border-gray-200 text-sm">
@@ -30,10 +30,10 @@
         <th class="px-4 py-2 text-left">Cad parcelles</th>
       </tr>
       </thead>
-
       <tbody>
         @for (adresse of adresses; track adresse.id) {
-          <tr class="border-t hover:bg-gray-50">
+          <tr class="border-t hover:bg-gray-50 cursor-pointer"
+              (click)="selectionnerAdresse(adresse)">
             <td class="px-4 py-2">{{ adresse.id }}</td>
             <td class="px-4 py-2">{{ adresse.id_fantoir }}</td>
             <td class="px-4 py-2">{{ adresse.numero }}</td>
@@ -68,4 +68,10 @@
       </tbody>
     </table>
   </div>
+  <mat-paginator
+    [length]="totalElements"
+    [pageSize]="pageSize"
+    [hidePageSize]="true"
+    (page)="onPageChange($event)">
+  </mat-paginator>
 </div>
