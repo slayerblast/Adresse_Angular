@@ -1,73 +1,40 @@
 <div class="mt-6">
   <h2 class="text-xl font-bold mb-4">Résultats {{ adresses.length }}</h2>
-
   <div class="overflow-x-auto">
-    <table class="min-w-full border border-gray-200 text-sm">
-      <thead class="bg-gray-100">
-      <tr>
-        <th class="px-4 py-2 text-left">ID</th>
-        <th class="px-4 py-2 text-left">ID Fantoir</th>
-        <th class="px-4 py-2 text-left">Numéro</th>
-        <th class="px-4 py-2 text-left">Rep</th>
-        <th class="px-4 py-2 text-left">Nom voie</th>
-        <th class="px-4 py-2 text-left">Code postal</th>
-        <th class="px-4 py-2 text-left">Code INSEE</th>
-        <th class="px-4 py-2 text-left">Commune</th>
-        <th class="px-4 py-2 text-left">Ancien code INSEE</th>
-        <th class="px-4 py-2 text-left">Ancienne commune</th>
-        <th class="px-4 py-2 text-left">X</th>
-        <th class="px-4 py-2 text-left">Y</th>
-        <th class="px-4 py-2 text-left">Longitude</th>
-        <th class="px-4 py-2 text-left">Latitude</th>
-        <th class="px-4 py-2 text-left">Type position</th>
-        <th class="px-4 py-2 text-left">Alias</th>
-        <th class="px-4 py-2 text-left">Nom LD</th>
-        <th class="px-4 py-2 text-left">Libellé acheminement</th>
-        <th class="px-4 py-2 text-left">Nom AFNOR</th>
-        <th class="px-4 py-2 text-left">Source position</th>
-        <th class="px-4 py-2 text-left">Source nom voie</th>
-        <th class="px-4 py-2 text-left">Certification commune</th>
-        <th class="px-4 py-2 text-left">Cad parcelles</th>
-      </tr>
-      </thead>
-      <tbody>
-        @for (adresse of adresses; track adresse.id) {
-          <tr class="border-t hover:bg-gray-50 cursor-pointer"
-              (click)="selectionnerAdresse(adresse)">
-            <td class="px-4 py-2">{{ adresse.id }}</td>
-            <td class="px-4 py-2">{{ adresse.id_fantoir }}</td>
-            <td class="px-4 py-2">{{ adresse.numero }}</td>
-            <td class="px-4 py-2">{{ adresse.rep }}</td>
-            <td class="px-4 py-2">{{ adresse.nom_voie }}</td>
-            <td class="px-4 py-2">{{ adresse.code_postal }}</td>
-            <td class="px-4 py-2">{{ adresse.code_insee }}</td>
-            <td class="px-4 py-2">{{ adresse.nom_commune }}</td>
-            <td class="px-4 py-2">{{ adresse.code_insee_ancienne_commune }}</td>
-            <td class="px-4 py-2">{{ adresse.nom_ancienne_commune }}</td>
-            <td class="px-4 py-2">{{ adresse.x }}</td>
-            <td class="px-4 py-2">{{ adresse.y }}</td>
-            <td class="px-4 py-2">{{ adresse.lon }}</td>
-            <td class="px-4 py-2">{{ adresse.lat }}</td>
-            <td class="px-4 py-2">{{ adresse.type_position }}</td>
-            <td class="px-4 py-2">{{ adresse.alias }}</td>
-            <td class="px-4 py-2">{{ adresse.nom_ld }}</td>
-            <td class="px-4 py-2">{{ adresse.libelle_acheminement }}</td>
-            <td class="px-4 py-2">{{ adresse.nom_afnor }}</td>
-            <td class="px-4 py-2">{{ adresse.source_position }}</td>
-            <td class="px-4 py-2">{{ adresse.source_nom_voie }}</td>
-            <td class="px-4 py-2">{{ adresse.certification_commune }}</td>
-            <td class="px-4 py-2">{{ adresse.cad_parcelles }}</td>
-          </tr>
-        } @empty {
-          <tr>
-            <td colspan="23" class="px-4 py-4 text-center text-gray-500">
-              Aucun résultat
-            </td>
-          </tr>
-        }
-      </tbody>
-    </table>
+    <div class="flex gap-4 pb-4">
+      @for (adresse of adresses; track adresse.id) {
+        <div
+          class="min-w-[300px] border rounded-lg p-4 shadow bg-white cursor-pointer"
+          (click)="selectionnerAdresse(adresse)">
+          @if (adresseFormatter.isComplementLogement(adresse.rep)) {
+            <div>
+              {{ adresseFormatter.buildLine1(adresse.rep) }}
+            </div>
+          }
+
+          <div>{{ adresseFormatter.buildLine2(adresse.type_position) }}</div>
+          <div>
+            {{ adresseFormatter.buildLine3(adresse.numero,adresse.rep,adresse.nom_afnor) }}
+          </div>
+
+          @if (adresse.nom_ld) {
+            <div>{{ adresseFormatter.buildLine4(adresse.nom_ld) }}</div>
+          }
+          <div>
+            {{ adresseFormatter.buildLine5(adresse.code_postal,adresse.libelle_acheminement) }}
+          </div>
+        </div>
+      }@empty {
+        <tr>
+          <td colspan="23" class="px-4 py-4 text-center text-gray-500">
+            Aucun résultat
+          </td>
+        </tr>
+      }
+
+    </div>
   </div>
+
   <mat-paginator
     [length]="totalElements"
     [pageSize]="pageSize"

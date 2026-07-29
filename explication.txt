@@ -1,0 +1,10 @@
+Etape 8
+Pour la norme AFNOR d'adressage postal, j'ai formé les lignes de la façon suivante
+ligne 1: doit afficher le rep que si ça concerne un appartement ou un logement
+-> Afficher Appartement avec son numero si il y en a un (le rep commence par app). Exemple : appt4 doit afficher Appartement 4
+-> Afficher Logement avec son numero si il y en a un (le rep commence par log). Exemple : log4 doit afficher Logement 4
+ligne 2: Afficher type_position. Toute la ligne en caps lock
+ligne 3: Afficher numero + rep (si ce n'est pas un logement ou un appartement) + nom_afnor. Toute la ligne en caps lock
+ligne 4: Afficher nom_ld .Toute la ligne en caps lock
+ligne 5: Afficher Code_postal + libelle_acheminement
+règle universelle : suppression des caractères spéciaux remplacés par des espaces

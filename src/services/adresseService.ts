@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { PageEvent } from '@angular/material/paginator';
+
 export interface Adresse {
   id: string;
   id_fantoir: string;
@@ -30,9 +30,9 @@ export interface Adresse {
 
 @Injectable({
   providedIn: 'root'
+
 })
 export class AdresseService {
-
   private http = inject(HttpClient);
   private apiUrl = 'http://localhost:8080/api/adresses';
   private dernierCodePostal?: string;
