@@ -57,12 +57,12 @@ export class AdresseFormatterService {
 
     if (this.isAppartement(value)) {
       const numero = value.replace(/^app?t?/i, '').replace(/[^0-9]/g, '');
-      return numero ? `APPARTEMENT ${numero}` : 'APPARTEMENT';
+      return numero ? `Appartement ${numero}`.substring(0,38) : 'Appartement';
     }
 
     if (this.isLogement(value)) {
       const numero = value.replace(/^log/i, '').replace(/[^0-9]/g, '');
-      return numero ? `LOGEMENT ${numero}` : 'LOGEMENT';
+      return numero ? `Logement ${numero}`.substring(0,38) : 'Logement';
     }
 
     return '';
@@ -72,7 +72,7 @@ export class AdresseFormatterService {
    * Ligne 2
    */
   buildLine2(typePosition?: string | null): string {
-    return this.normalize(typePosition).toUpperCase();
+    return this.normalize(typePosition).toUpperCase().substring(0,38);
   }
 
   /**
@@ -98,7 +98,7 @@ export class AdresseFormatterService {
       parts.push(nomAfnor.trim());
     }
 
-    return parts.join(' ').trim();
+    return parts.join(' ').trim().substring(0,38);
   }
 
   /**
@@ -106,11 +106,11 @@ export class AdresseFormatterService {
    */
   buildLine4(nomLd?: string | null): string {
 
-    if (!nomLd || nomLd === '_1') {
+    if (!nomLd) {
       return '';
     }
 
-    return this.normalize(nomLd).toUpperCase();
+    return this.normalize(nomLd).toUpperCase().substring(0,38);
   }
 
   /**
@@ -124,6 +124,7 @@ export class AdresseFormatterService {
     return [codePostal, libelleAcheminement]
       .filter(Boolean)
       .join(' ')
-      .trim();
+      .trim()
+      .substring(0,38);
   }
 }

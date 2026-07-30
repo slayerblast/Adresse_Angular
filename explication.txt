@@ -7,4 +7,4 @@ ligne 2: Afficher type_position. Toute la ligne en caps lock
 ligne 3: Afficher numero + rep (si ce n'est pas un logement ou un appartement) + nom_afnor. Toute la ligne en caps lock
 ligne 4: Afficher nom_ld .Toute la ligne en caps lock
 ligne 5: Afficher Code_postal + libelle_acheminement
-règle universelle : suppression des caractères spéciaux remplacés par des espaces
+règle universelle : suppression des caractères spéciaux remplacés par des espaces + 38 caractères max pas ligne.
