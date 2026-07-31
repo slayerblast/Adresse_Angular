@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, ViewChild } from '@angular/core';
 import { Adresse, AdresseService } from '../../services/adresseService';
 import { AdresseFormatterService } from '../../services/adresse-formatter-service';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
@@ -15,9 +15,10 @@ export class ListeAdresses {
   adresseFormatter = inject(AdresseFormatterService);
   private cdr = inject(ChangeDetectorRef);
   adresses: Adresse[] = [];
-  repV = true;
   totalElements = 0;
   pageSize = 20;
+  pageIndex = 0;
+
   selectionnerAdresse(adresse: Adresse) {
     this.adresseService.selectionnerAdresse(adresse);
   }
@@ -25,6 +26,7 @@ export class ListeAdresses {
     this.adresseService.adresses$.subscribe((adresses) => {
       this.adresses = adresses;
       this.cdr.detectChanges();
+      this.pageIndex = this.adresseService.pageIndex;
     });
 
     this.adresseService.totalElements$.subscribe((total) => {
@@ -38,6 +40,8 @@ export class ListeAdresses {
   }
   onPageChange(event: PageEvent) {
     console.log('Nouvelle page :', event.pageIndex);
+    this.pageIndex = event.pageIndex
+    this.adresseService.pageIndex = event.pageIndex
     this.adresseService
       .chargerPage(event.pageIndex)
       .subscribe(data => {
@@ -52,5 +56,4 @@ export class ListeAdresses {
       });
   }
 
-  protected readonly AdresseFormatterService = AdresseFormatterService;
 }

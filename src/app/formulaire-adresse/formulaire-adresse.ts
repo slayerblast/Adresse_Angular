@@ -26,8 +26,9 @@ export class FormulaireAdresse {
       this.commune
     );
     this.adresseService
-      .rechercherAdresses(this.codePostal, this.nomRue, this.commune,0)
+      .rechercherAdresses(this.codePostal, this.nomRue.toLowerCase(), this.commune.toLowerCase(),0)
       .subscribe((data: any) => {
+        this.adresseService.pageIndex = 0
         this.adresseService.setAdresses(data.content);
         this.adresseService.setPagination(data.totalElements, data.size);
       });

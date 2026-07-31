@@ -44,6 +44,7 @@ export class AdresseService {
     new BehaviorSubject<Adresse | null>(null);
   adresseSelectionnee$ =
     this.adresseSelectionneeSubject.asObservable();
+  pageIndex = 0;
   sauvegarderCritereRecherche(
     codePostal?: string,
     rue?: string,
