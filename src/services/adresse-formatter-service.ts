@@ -34,7 +34,7 @@ export class AdresseFormatterService {
    * Indique si le rep correspond à un logement
    */
   isLogement(rep?: string | null): boolean {
-    return /^log/i.test(rep?.trim() ?? '');
+    return /^(log|lg)/i.test(rep?.trim() ?? '');
   }
 
   /**
