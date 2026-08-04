@@ -27,7 +27,18 @@ export class ListeAdresses {
       this.adresses = adresses;
       this.cdr.detectChanges();
       this.pageIndex = this.adresseService.pageIndex;
+      this.cdr.detectChanges();
     });
+
+    this.adresseService.suggestions$
+      .subscribe(adresses => {
+
+        if (adresses.length > 0) {
+          this.adresses = adresses;
+          this.totalElements = adresses.length;
+          this.cdr.detectChanges();
+        }
+      });
 
     this.adresseService.totalElements$.subscribe((total) => {
       this.totalElements = total;

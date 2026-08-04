@@ -40,11 +40,17 @@ export class AdresseService {
   private derniereCommune?: string;
   private adressesSubject = new BehaviorSubject<Adresse[]>([]);
   adresses$ = this.adressesSubject.asObservable();
-  private adresseSelectionneeSubject =
-    new BehaviorSubject<Adresse | null>(null);
-  adresseSelectionnee$ =
-    this.adresseSelectionneeSubject.asObservable();
+  private adresseSelectionneeSubject = new BehaviorSubject<Adresse | null>(null);
+  adresseSelectionnee$ = this.adresseSelectionneeSubject.asObservable();
+  private suggestionsSubject = new BehaviorSubject<Adresse[]>([]);
+
+  suggestions$ = this.suggestionsSubject.asObservable();
+
+  setSuggestions(adresses: Adresse[]) {this.suggestionsSubject.next(adresses);
+  }
+
   pageIndex = 0;
+
   sauvegarderCritereRecherche(
     codePostal?: string,
     rue?: string,
@@ -88,6 +94,7 @@ export class AdresseService {
     this.pageSizeSubject.next(pageSize);
   }
 
+
   rechercherAdresses(
     codePostal?: string,
     rue?: string,
@@ -114,5 +121,21 @@ export class AdresseService {
       .set('size', 20);
 
     return this.http.get<any>(this.apiUrl, { params });
+  }
+
+  autocomplete(
+    q: string
+  ): Observable<Adresse[]> {
+
+    let params = new HttpParams();
+
+    if (q) {
+      params = params.set('q', q);
+    }
+
+    return this.http.get<Adresse[]>(
+      `${this.apiUrl}/autocomplete`,
+      { params }
+    );
   }
 }

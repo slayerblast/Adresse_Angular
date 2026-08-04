@@ -2,7 +2,7 @@ Etape 8
 Pour la norme AFNOR d'adressage postal, j'ai formé les lignes de la façon suivante
 ligne 1: doit afficher le rep que si ça concerne un appartement ou un logement
 -> Afficher Appartement avec son numero si il y en a un. Exemple : appt4 doit afficher Appartement 4
-Valeurs considérées comme appartement : a, apt et tous ce qui commence par "app" et la casse est ignorée 
+Valeurs considérées comme appartement : a, apt et tous ce qui commence par "app" et la casse est ignorée
 -> Afficher Logement avec son numero si il y en a un (le rep commence par log). Exemple : log4 doit afficher Logement 4
 Valeurs considérées comme logement : lg, tous ce qui commence par log et la casse est ignorée
 ligne 2: Afficher type_position. Toute la ligne en caps lock
@@ -11,3 +11,15 @@ ligne 4: Afficher nom_ld .Toute la ligne en caps lock
 ligne 5: Afficher Code_postal + libelle_acheminement
 règle universelle : suppression des caractères spéciaux remplacés par des espaces + 38 caractères max pas ligne.
 
+Coté front j'ai utilisé 3 composants :
+Formulaire adresse -> affiche les entrées de text pour les champs Nom rue, Code Postal, Commune et un bouton Valider qui est caché s'il n'y a pas au moins 1 caractère dans un champ
+Map -> utilisation de la bibliothèque Leaflet
+Liste adresse -> affiche la liste des adresses par rapport à ce qui est entrée dans le formulaire + utilisation de mat-paginator pour la pagination
+
+
+Etape 9
+Dans cette étape, j'ai changé le composant Formulaire adresse pour lui ajouter un input pour la recherche dynamique
+Mon formulaire a 3 règles :
+Règle 1: L'input de recherche dynamique appel l'API s'il y au moins 3 caractères d'entrées
+Règle 2: L'input de recherche dynamique disparait si il y a au moins 1 caractère d'entrée dans un des trois inputs : Nom voie, Code postal, Commune
+Règle 3: Les inputs Nom voie, git Code postal, Commune ne sont pas visible si au moins un caractère est écrit dans l'input
