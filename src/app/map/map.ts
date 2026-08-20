@@ -12,9 +12,17 @@ import { AdresseService } from '../../services/adresseService';
 export class Map implements AfterViewInit {
 
   private adresseService = inject(AdresseService);
-
   private map!: L.Map;
   private marker?: L.Marker;
+  private markerRecherche?: L.Marker;
+  private customIcon = L.icon({
+  iconUrl: 'assets/leaflet/pin_map.png',
+  shadowUrl: 'assets/leaflet/marker-shadow.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41]
+});
 
   ngAfterViewInit(): void {
 
@@ -55,5 +63,23 @@ export class Map implements AfterViewInit {
             `${adresse.numero} ${adresse.nom_voie}`
           );
       });
+
+        this.map.on('click', (event: L.LeafletMouseEvent) => {
+
+          const lat = event.latlng.lat;
+          const lon = event.latlng.lng;
+
+          if (this.markerRecherche) {
+            this.map.removeLayer(this.markerRecherche);
+          }
+
+          this.markerRecherche = L.marker(
+            [lat, lon],
+            { icon: this.customIcon }
+          ).addTo(this.map);
+        this.adresseService.rechercherAdressesProches(lat,lon)
+        });
+
+
   }
 }

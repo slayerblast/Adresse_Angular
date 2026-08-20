@@ -1,4 +1,5 @@
 import { ChangeDetectorRef, Component, inject, ViewChild } from '@angular/core';
+import { DecimalPipe } from '@angular/common';
 import { Adresse, AdresseService } from '../../services/adresseService';
 import { AdresseFormatterService } from '../../services/adresse-formatter-service';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
@@ -6,7 +7,7 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 @Component({
   selector: 'app-liste-adresses',
   standalone: true,
-  imports: [MatPaginator],
+  imports: [MatPaginator,DecimalPipe],
   templateUrl: './liste-adresses.html',
   styleUrl: './liste-adresses.css',
 })
@@ -18,6 +19,7 @@ export class ListeAdresses {
   totalElements = 0;
   pageSize = 20;
   pageIndex = 0;
+  readonly distance = this.adresseService.distanceMetre;
 
   selectionnerAdresse(adresse: Adresse) {
     this.adresseService.selectionnerAdresse(adresse);
@@ -29,6 +31,11 @@ export class ListeAdresses {
       this.pageIndex = this.adresseService.pageIndex;
       this.cdr.detectChanges();
     });
+
+    this.adresseService.adressesTrouvees$
+      .subscribe((adresses: Adresse[]) => {
+        this.adresses = adresses;
+      });
 
     this.adresseService.suggestions$
       .subscribe(adresses => {

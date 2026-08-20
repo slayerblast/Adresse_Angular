@@ -6,6 +6,12 @@
         <div
           class="min-w-[300px] border rounded-lg p-4 shadow bg-white cursor-pointer"
           (click)="selectionnerAdresse(adresse)">
+          @if(distance != null && distance != undefined){
+          <div>
+            distance :{{ distance() | number:'1.2-2' }}
+          </div>
+          }
+
           @if (adresseFormatter.isComplementLogement(adresse.rep)) {
             <div>
               {{ adresseFormatter.buildLine1(adresse.rep) }}

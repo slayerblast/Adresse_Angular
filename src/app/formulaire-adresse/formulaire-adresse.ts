@@ -35,6 +35,7 @@ export class FormulaireAdresse {
         .autocomplete(search)
         .subscribe(result => {
           this.adresseService.setSuggestions(result);
+
         });
     });
   }

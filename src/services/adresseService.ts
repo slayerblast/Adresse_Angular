@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 
@@ -43,7 +43,10 @@ export class AdresseService {
   private adresseSelectionneeSubject = new BehaviorSubject<Adresse | null>(null);
   adresseSelectionnee$ = this.adresseSelectionneeSubject.asObservable();
   private suggestionsSubject = new BehaviorSubject<Adresse[]>([]);
+  private readonly distanceMetreSignal = signal<number | undefined>(undefined);
+  readonly distanceMetre = this.distanceMetreSignal.asReadonly();
 
+  adressesTrouvees$ = this.adressesSubject.asObservable();
   suggestions$ = this.suggestionsSubject.asObservable();
 
   setSuggestions(adresses: Adresse[]) {this.suggestionsSubject.next(adresses);
@@ -138,4 +141,48 @@ export class AdresseService {
       { params }
     );
   }
+rechercherAdressesProches(
+    lat: number,
+    lon: number
+  ): void {
+
+    this.http
+      .get<Adresse[]>(`${this.apiUrl}/proches?lat=${lat}&lon=${lon}`)
+      .subscribe(adresses => {
+        console.log('Adresse trouvée :', adresses);
+        this.adressesSubject.next(adresses);
+        this.distanceMetreSignal.set(this.calculerDistance(lat,lon,adresses[0].lat,adresses[0].lon));
+      });
+  }
+
+calculerDistance(
+  lat1: number,
+  lon1: number,
+  lat2: number,
+  lon2: number
+): number {
+
+  const rayonTerre = 6_371_000;
+
+  const latDistance = this.versRadians(lat2 - lat1);
+  const lonDistance = this.versRadians(lon2 - lon1);
+
+  const a =
+    Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
+    + Math.cos(this.versRadians(lat1))
+    * Math.cos(this.versRadians(lat2))
+    * Math.sin(lonDistance / 2)
+    * Math.sin(lonDistance / 2);
+
+  const c = 2 * Math.atan2(
+    Math.sqrt(a),
+    Math.sqrt(1 - a)
+  );
+
+  return rayonTerre * c;
+}
+
+private versRadians(degres: number): number {
+  return degres * Math.PI / 180;
+}
 }
