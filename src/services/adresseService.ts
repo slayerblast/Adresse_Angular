@@ -1,6 +1,8 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
+import {TarifCommuneService} from './tarif-commune-service'
+import { TarifCommune } from '../models/TarifCommune';
 
 export interface Adresse {
   id: string;
@@ -30,14 +32,16 @@ export interface Adresse {
 
 @Injectable({
   providedIn: 'root'
-
 })
 export class AdresseService {
+  private tarifCommuneService = inject(TarifCommuneService)
   private http = inject(HttpClient);
   private apiUrl = 'http://localhost:8080/api/adresses';
   private dernierCodePostal?: string;
   private derniereRue?: string;
   private derniereCommune?: string;
+  private tarifCommuneSubject = new BehaviorSubject<TarifCommune| null>(null);
+  tarifCommuneSelectionnee$ = this.tarifCommuneSubject.asObservable()
   private adressesSubject = new BehaviorSubject<Adresse[]>([]);
   adresses$ = this.adressesSubject.asObservable();
   private adresseSelectionneeSubject = new BehaviorSubject<Adresse | null>(null);
@@ -152,9 +156,19 @@ rechercherAdressesProches(
         console.log('Adresse trouvée :', adresses);
         this.adressesSubject.next(adresses);
         this.distanceMetreSignal.set(this.calculerDistance(lat,lon,adresses[0].lat,adresses[0].lon));
+        const codeInsee = adresses[0].code_insee;
+        this.tarifCommuneService
+          .getTarifCommune(codeInsee)
+          .subscribe(item => {
+            this.tarifCommuneSubject.next(item);
+            console.log('Tarif commune :', item);
+          });
+        console.log(adresses);
       });
   }
-
+infoCommune(codeInsee : string):void{
+  this.http
+  }
 calculerDistance(
   lat1: number,
   lon1: number,

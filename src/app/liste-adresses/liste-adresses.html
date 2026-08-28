@@ -1,4 +1,7 @@
-<div class="mt-6">
+<div class="container mx-auto px-6 mt-6">
+<div class="mt-6 flex flex-col lg:flex-row gap-4">
+
+  <div id="adresses" class="xl:basis-[45%]">
   <h2 class="text-xl font-bold mb-4">Résultats {{ adresses.length }}</h2>
   <div class="overflow-x-auto">
     <div class="flex gap-4 pb-4">
@@ -8,7 +11,7 @@
           (click)="selectionnerAdresse(adresse)">
           @if(distance != null && distance != undefined){
           <div>
-            distance :{{ distance() | number:'1.2-2' }}
+            distance :{{ distance() | number:'1.2-2' }} mètre
           </div>
           }
 
@@ -48,4 +51,113 @@
     [hidePageSize]="true"
     (page)="onPageChange($event)">
   </mat-paginator>
+</div>
+@if(tarifCommune != null){
+
+  <div id="tarif" class="xl:basis-[55%]">
+
+  <div class="bg-white rounded-xl shadow p-6">
+
+    <h2 class="text-xl font-bold mb-4">
+      Tarif Commune {{ tarifCommune.codeInsee }}
+    </h2>
+
+    <table class="w-full text-sm">
+      <thead>
+      <tr class="border-b bg-gray-50">
+        <th class="text-left py-3 px-2">Indicateur</th>
+        <th class="text-center py-3 px-2">N</th>
+        <th class="text-center py-3 px-2">N-1</th>
+        <th class="text-center py-3 px-2">Variation</th>
+      </tr>
+      </thead>
+
+      <tbody>
+
+      <tr class="border-b">
+        <td class="py-3 px-2">Prix moyen</td>
+        <td class="text-center">{{ tarifCommune.prixMoyen | number }}</td>
+        <td class="text-center">{{ tarifCommune.prixMoyenN1 | number }}</td>
+        <td class="text-center font-medium">
+          {{ tarifCommune.variationPrixMoyenPct }} %
+        </td>
+      </tr>
+
+      <tr class="border-b">
+        <td class="py-3 px-2">Prix médian</td>
+        <td class="text-center">{{ tarifCommune.prixMedian | number }}</td>
+        <td class="text-center">{{ tarifCommune.prixMedianN1 | number }}</td>
+        <td class="text-center font-medium">
+          {{ tarifCommune.variationPrixMedianPct }} %
+        </td>
+      </tr>
+
+      <tr class="border-b">
+        <td class="py-3 px-2">Prix au m²</td>
+        <td class="text-center">{{ tarifCommune.prixM2 | number }}</td>
+        <td class="text-center">{{ tarifCommune.prixM2N1 | number }}</td>
+        <td class="text-center font-medium">
+          {{ tarifCommune.variationPrixM2Pct }} %
+        </td>
+      </tr>
+
+      <tr>
+        <td class="py-3 px-2">Transactions</td>
+        <td class="text-center">{{ tarifCommune.nombreTransactions }}</td>
+        <td class="text-center">{{ tarifCommune.nombreTransactionsN1 }}</td>
+        <td class="text-center font-medium">
+          {{ tarifCommune.variationNombreTransactionsPct }} %
+        </td>
+      </tr>
+
+      </tbody>
+    </table>
+
+    <div class="mt-6 border-t pt-4">
+      <h3 class="font-semibold mb-3">
+        Périodes analysées
+      </h3>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+        <div class="bg-gray-50 rounded-lg p-3">
+          <p class="font-medium mb-2">Période N</p>
+          <p>
+            Du
+            {{ tarifCommune.dateDebutPeriodeN  }}
+          </p>
+          <p>
+            Au
+            {{ tarifCommune.dateFinPeriodeN  }}
+          </p>
+        </div>
+
+        <div class="bg-gray-50 rounded-lg p-3">
+          <p class="font-medium mb-2">Période N-1</p>
+          <p>
+            Du
+            {{ tarifCommune.dateDebutPeriodeN1  }}
+          </p>
+          <p>
+            Au
+            {{ tarifCommune.dateFinPeriodeN1  }}
+          </p>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="mt-6 border-t pt-4 flex justify-between items-center text-sm text-gray-600">
+      <span>Date de calcul</span>
+      <span>
+        {{ tarifCommune.dateCalcul  }}
+      </span>
+    </div>
+
+  </div>
+
+</div>
+
+}
+</div>
 </div>

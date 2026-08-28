@@ -11,5 +11,6 @@ import {ListeAdresses} from './liste-adresses/liste-adresses';
   styleUrl: './app.css'
 })
 export class App {
+  rechercheActive = false;
   protected readonly title = signal('adresse_angular');
 }

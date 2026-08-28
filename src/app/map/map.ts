@@ -78,6 +78,7 @@ export class Map implements AfterViewInit {
             { icon: this.customIcon }
           ).addTo(this.map);
         this.adresseService.rechercherAdressesProches(lat,lon)
+
         });
 
 

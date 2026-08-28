@@ -3,6 +3,7 @@ import { DecimalPipe } from '@angular/common';
 import { Adresse, AdresseService } from '../../services/adresseService';
 import { AdresseFormatterService } from '../../services/adresse-formatter-service';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { TarifCommune } from '../../models/TarifCommune';
 
 @Component({
   selector: 'app-liste-adresses',
@@ -16,22 +17,27 @@ export class ListeAdresses {
   adresseFormatter = inject(AdresseFormatterService);
   private cdr = inject(ChangeDetectorRef);
   adresses: Adresse[] = [];
+  tarifCommune: TarifCommune | null = null;
   totalElements = 0;
   pageSize = 20;
   pageIndex = 0;
+
   readonly distance = this.adresseService.distanceMetre;
 
   selectionnerAdresse(adresse: Adresse) {
     this.adresseService.selectionnerAdresse(adresse);
+    console.log("tarif selectionné"+this.adresseService.tarifCommuneSelectionnee$)
   }
   ngOnInit() {
     this.adresseService.adresses$.subscribe((adresses) => {
       this.adresses = adresses;
-      this.cdr.detectChanges();
       this.pageIndex = this.adresseService.pageIndex;
       this.cdr.detectChanges();
     });
-
+    this.adresseService.tarifCommuneSelectionnee$.subscribe((tarifCommune)=>{
+      this.tarifCommune = tarifCommune;
+      this.cdr.detectChanges();
+      })
     this.adresseService.adressesTrouvees$
       .subscribe((adresses: Adresse[]) => {
         this.adresses = adresses;
