@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, inject } from '@angular/core';
 import * as L from 'leaflet';
 import { AdresseService } from '../../services/adresseService';
+import { CommuneService } from '../../services/commune-service';
 
 @Component({
   selector: 'app-map',
@@ -11,6 +12,7 @@ import { AdresseService } from '../../services/adresseService';
 })
 export class Map implements AfterViewInit {
 
+  private communeService = inject(CommuneService)
   private adresseService = inject(AdresseService);
   private map!: L.Map;
   private marker?: L.Marker;
@@ -80,7 +82,41 @@ export class Map implements AfterViewInit {
         this.adresseService.rechercherAdressesProches(lat,lon)
 
         });
-
+      this.loadContours();
 
   }
+
+private loadContours(): void {
+this.communeService.getContours()
+  .subscribe((contours: any[]) => {
+    contours.forEach((c: any) => {
+      const geoJson = JSON.parse(c.contour);
+      //console.log(c.prixMoyen,this.getOpacity(c.prixMoyen));
+      L.geoJSON(geoJson, {
+        style: {
+          color: '#ff0000',
+          weight: 0.5,
+          opacity: 1,
+          fillColor: '#ff9800',
+          fillOpacity: this.getOpacity(c.prixMoyen)
+        }
+
+      }).addTo(this.map);
+    });
+
+  });
+
+  }
+private getOpacity(prix: number): number {
+  const prixMin = 15000;
+  const prixMax = 3000000;
+
+  return Math.max(
+    0.1,
+    Math.min(
+      1,
+      (prix - prixMin) / (prixMax - prixMin)
+    )
+  );
+}
 }
