@@ -166,9 +166,7 @@ rechercherAdressesProches(
         console.log(adresses);
       });
   }
-infoCommune(codeInsee : string):void{
-  this.http
-  }
+
 calculerDistance(
   lat1: number,
   lon1: number,

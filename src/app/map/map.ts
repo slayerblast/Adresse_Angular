@@ -45,7 +45,9 @@ export class Map implements AfterViewInit {
     this.adresseService.adresseSelectionnee$
       .subscribe(adresse => {
 
-        if (!adresse) {return;}
+        if (!adresse) {
+
+          return;}
 
         this.map.setView(
           [adresse.lat, adresse.lon],
@@ -91,14 +93,14 @@ this.communeService.getContours()
   .subscribe((contours: any[]) => {
     contours.forEach((c: any) => {
       const geoJson = JSON.parse(c.contour);
-      //console.log(c.prixMoyen,this.getOpacity(c.prixMoyen));
+      //console.log(c.prixM2,this.getOpacity(c.prixM2));
       L.geoJSON(geoJson, {
         style: {
           color: '#ff0000',
           weight: 0.5,
           opacity: 1,
           fillColor: '#ff9800',
-          fillOpacity: this.getOpacity(c.prixMoyen)
+          fillOpacity: this.getOpacity(c.prixM2)
         }
 
       }).addTo(this.map);
@@ -108,13 +110,13 @@ this.communeService.getContours()
 
   }
 private getOpacity(prix: number): number {
-  const prixMin = 15000;
-  const prixMax = 3000000;
+  const prixMin = 500;
+  const prixMax = 20000;
 
   return Math.max(
     0.1,
     Math.min(
-      1,
+      0.8,
       (prix - prixMin) / (prixMax - prixMin)
     )
   );
